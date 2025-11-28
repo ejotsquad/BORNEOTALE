@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAO ANJINGG</title>
+    <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhYfA4VWctM8g3xdejZR69PoF_er_x4oCJXC9VD24_Jqv19L5M_yaZsSxkIByQvxXkoGEW-RmsIU1TNuWM513O54BoSihrViRXqVbTeA0Eq6sEbVSeo_6DIBTe0TwNVLMCuP2Ct319scOxw9kAAnleH4gBmyi-Pt6kI1TaTmET2_UzSqqhpuYX8twSUZyc/s16000/BTJpg.jpg">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Montserrat, Playfair, & Press Start 2P (Pixel) -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Konfigurasi Tema Kustom -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'borneo-green': '#0f392b',
+                        'borneo-light': '#e8f5e9',
+                        'borneo-gold': '#d4a373',
+                        'borneo-dark': '#0a261d',
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        pixel: ['"Press Start 2P"', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* --- UTILITY & MAIN SITE STYLES --- */
+        .glass-nav {
+            background: rgb(49, 49, 49);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .hero-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1518182170546-0766ce6fecfa?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* --- MODAL & SLIDER STYLES --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 100;
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: white;
+            width: 90%; max-width: 600px;
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
+            animation: zoomIn 0.3s ease;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes zoomIn { from {transform: scale(0.95); opacity: 0;} to {transform: scale(1); opacity: 1;} }
+
+        .slider-container {
+            position: relative;
+            height: 350px;
+            background: #000;
+        }
+
+        .slider-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        
+        .slider-img.active { display: block; }
+
+        .slider-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5); color: white;
+            border: none; padding: 12px; cursor: pointer;
+            font-size: 20px; border-radius: 50%;
+            transition: background 0.3s;
+            z-index: 10;
+        }
+        .slider-btn:hover { background: #d4a373; color: black; }
+        .prev-btn { left: 15px; }
+        .next-btn { right: 15px; }
+
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: white;
+            color: black;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 20;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Card Hover enhancements */
+        .card-hover { transition: transform 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); }
+        .card-hover:hover .card-overlay { opacity: 1; }
+        .card-hover:hover img.bg-img { transform: scale(1.1); }
+
+        /* --- USER PRELOADER STYLES --- */
+        body { overflow: hidden; } /* Prevent scroll initially */
+
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            flex-direction: column; overflow: hidden;
+            background-color: #000000;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        .bg-image {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjEbx_xYAysmf9FFVzX2zHeSh0f28LGiqaMd0tDnk7vE80JwEy-njIBob5w0WwLxsk6bXNsyxHUb9WqGMaa7OThlYS65WPtI9-YvcdYS1EKtq54s2pi8uYLqoFRXLfJ0EOaJXkkLtzaUsezN2UTTvyRHYrq_n-4-42b6wVIo7teLLwwFMzs968G5SO8yw8/w640-h332/HeaderIMG.jpg');
+            background-size: cover; background-position: center bottom;
+            image-rendering: pixelated; z-index: 1;
+        }
+
+        .title-container { position: relative; z-index: 2; text-align: center; color: black; text-shadow: 4px 4px 0px #ffffff; }
+        .title-container h1 { font-size: clamp(20px, 5vw, 60px); line-height: 1.5; white-space: nowrap; }
+        .subtitle { font-size: clamp(10px, 2vw, 20px); margin-top: 10px; opacity: 0; animation: fadeIn 1s ease-out 3.5s forwards; }
+        @keyframes fadeIn { to { opacity: 1; } }
+        #target-t { display: inline-block; position: relative; color: #000000; text-shadow: 0px 2px 10px rgb(251, 255, 0); }
+        
+        #bird {
+            position: absolute; width: clamp(60px, 10vw, 120px); z-index: 3;
+            image-rendering: pixelated; left: 5%; top: 40%;
+            animation: idleTree 2s infinite ease-in-out; visibility: hidden;
+        }
+        @keyframes idleTree { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        @keyframes perched { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(5deg); } }
+        .preloader-hidden { opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
+        #main-content { display: none; font-family: 'Montserrat', sans-serif; }
+        /* Fallback for browsers that don't support aspect-ratio */
+        .aspect-square { aspect-ratio: 1 / 1; }
+        /* --- HERO GIF (centered, half-size, behind text) --- */
+        .hero-gif {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            height: 50%;
+            object-fit: contain;
+            z-index: 5; /* behind text which uses z-10 */
+            opacity: 0.1; /* 10% default */
+            transition: opacity 200ms ease-in-out, transform 300ms ease;
+            pointer-events: auto; /* allow hover when cursor over GIF */
+            filter: saturate(1) contrast(1);
+        }
+
+        /* Increase opacity only when hovering the GIF (to ~65%) */
+        .hero-gif:hover { opacity: 0.65; transform: translate(-50%, -50%) scale(1.02); }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-gray-50 antialiased selection:bg-borneo-gold selection:text-white">
+
+    <!-- PRELOADER AREA -->
+    <div id="preloader">
+        <div class="bg-image"></div>
+        <div class="title-container">
+            <h1>BORNEO <span id="target-t">T</span>ALE</h1>
+            <div class="subtitle">FAK MEN</div>
+        </div>
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjWcbf20SEmTeLyNvgQ-1S4foC6xxrehjTxBXd7WZR2RP8AtK2q3BfZv3tgRcyJds-ulOub5ZC00Imgi4mBSIz6MEuA0tsK9LzNsNhy9XTgacGR8BUvFQYcg350F_sgHMpQypGKhfADL2x20uSgH6xpVuKnaFrwkCiLdWOLIIt14GPEPvw2uiUbf26bCQA/s16000/BTlPNG.png" alt="Borneo Tale Bird" id="bird">
+    </div>
+
+    <!-- MAIN WEBSITE CONTENT -->
+    <div id="main-content">
+        <!-- Navigation -->
+        <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex-shrink-0">
+                        <a href="#" class="text-2xl font-serif font-bold text-white tracking-wider flex items-center gap-2">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiS1ee7kfp2EeU32CFiUOLCAmek_wNHnbd30kr56c9g-Ra4qBM3Df7HiHcUkVGQ2x3kdqG_A-7gqHZLgOXHMeixtBpEtTU0mq3sZ3xMDcf5iGWYD95pQVGoWGNtC0H5a7lLpoLNWq7Fn-YbWsApWG8X4JpM6Dnd81MfAUXJb4v4kuOTqSBG1itp1bvaYdQ/s16000/BertenggerGIF.gif" alt="Logo Borneo Tale" class="h-10 w-15">
+                            BORNEO TALE
+                        </a>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-8">
+                            <a href="#beranda" class="text-borneo-gold hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"><strong> Beranda </strong></a>
+                            <a href="#tentang" class="text-borneo-gold hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"><strong> Tentang</a></strong>
+                            
+                            <!-- MENU DROP DOWN ALBUM -->
+                            <div class="relative group">
+                                <button class="text-borneo-gold hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer">
+                                    <a href="#karya"><strong>Galeri</strong></a>
+                                    <i class="ph ph-caret-down text-xs mt-0.5"></i>
+                                </button>
+                                
+                                <!-- Isi Submenu (Muncul saat hover) -->
+                                <div class="absolute left-0 mt-0 w-48 bg-white rounded-xl shadow-xl py-2 hidden group-hover:block transition-all duration-300 origin-top-left z-50 border border-gray-100 animate-fade-in-up">
+                                    <a href="#foto-alam" class="block px-4 py-2 text-sm text-gray-700 hover:bg-borneo-light hover:text-borneo-green transition-colors border-b border-gray-50">ALBUM FOTO</a>
+                                    <a href="#dokumenter" class="block px-4 py-2 text-sm text-gray-700 hover:bg-borneo-light hover:text-borneo-green transition-colors border-b border-gray-50">ALBUM VIDEO</a>
+                                    <a href="#budaya" class="block px-4 py-2 text-sm text-gray-700 hover:bg-borneo-light hover:text-borneo-green transition-colors">TOLONG ISI AGIK SISANYA VAN</a>
+                                </div>
+                            </div>
+                            <!-- AKHIR MENU DROP DOWN -->
+
+                            <a href="#kontak" class="bg-white text-borneo-dark hover:bg-borneo-gold px-5 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105">Kontak</a>
+                        </div>
+                    </div>
+                    <div class="-mr-2 flex md:hidden">
+                        <button onclick="toggleMobileMenu()" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-white/10 focus:outline-none">
+                            <i class="ph ph-list text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu Panel -->
+            <div class="md:hidden hidden bg-borneo-dark border-t border-gray-700" id="mobile-menu">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#beranda" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Beranda</a>
+                    <a href="#tentang" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Tentang</a>
+                    
+                    <!-- Mobile Gallery Dropdown (Accordion) -->
+                    <div>
+                        <button onclick="toggleMobileGallery()" class="w-full text-left text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium flex justify-between items-center focus:outline-none group">
+                            Galeri
+                            <i id="mobile-gallery-icon" class="ph ph-caret-down transition-transform duration-300"></i>
+                        </button>
+                        <!-- Hidden Submenu -->
+                        <div id="mobile-gallery-submenu" class="hidden pl-6 space-y-1 bg-black/20 rounded-md mt-1">
+                            <a href="#foto-alam" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-sm text-gray-400 hover:text-borneo-gold transition-colors">ALBUM FOTO</a>
+                            <a href="#dokumenter" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-sm text-gray-400 hover:text-borneo-gold transition-colors">ALBUM VIDEO</a>
+                            <a href="#budaya" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-sm text-gray-400 hover:text-borneo-gold transition-colors">ALBUM (apa lagi ivan)</a>
+                        </div>
+                    </div>
+
+                    <a href="#kontak" onclick="toggleMobileMenu()" class="text-borneo-gold block px-3 py-2 rounded-md text-base font-bold">Hubungi Kami</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section id="beranda" class="hero-bg h-screen flex items-center justify-center text-center px-4 relative" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjEbx_xYAysmf9FFVzX2zHeSh0f28LGiqaMd0tDnk7vE80JwEy-njIBob5w0WwLxsk6bXNsyxHUb9WqGMaa7OThlYS65WPtI9-YvcdYS1EKtq54s2pi8uYLqoFRXLfJ0EOaJXkkLtzaUsezN2UTTvyRHYrq_n-4-42b6wVIo7teLLwwFMzs968G5SO8yw8/w640-h332/HeaderIMG.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
+            <!-- Animated GIF placed behind the hero text (centered, half-size) -->
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi4_jQyBBfZyba5SxV0UfSoHRCOlFo89rBuEkBJsI7J9_VtrkQxKKnxWLu-RMgMsLr7XxHHfT7tSJ8clV-Sa6msT5KLco1DKG2fFlfXxnp_UfW5BgsZF72kHsleS3YpZ_DSr8dvnv3isA_Cem2Bo4KWCFM8kualUU4xtAuL470lHJMXyHk74U3sWGaZ-C8/w320-h320/TerbangGIF.gif" alt="Terbang GIF" class="hero-gif" aria-hidden="true">
+            <div class="max-w-4xl mx-auto z-15 animate-fade-in-up">
+                <span class="text-borneo-gold uppercase tracking-[0.3em] text-sm md:text-base font-bold mb-4 block">WELCOME TO</span>
+                <h1 class="text-5xl md:text-7xl font-serif font-bold text-white mb-6 leading-tight">
+                    BORNEO TALE <br> <span class="italic text-gray-300"></span> 
+                </h1> 
+                
+                <p class="text-gray-200 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light">
+                    <i>NAMA SAYA</i> <strong>DAIVA COLLIN BAFUCKAKA</strong> <i>SAYA SANGAT SUKA NONTON BxKeP dan MENGIRIMKAN NYA KE SEMUA Orang</i>  
+                    
+                    <h1 stye="font-size: 5px color: red">saya mmmg tidak jelas orgnya</h1>
+                </p> <br>
+        </section>
+
+
+        <!-- About Section -->
+        <section id="tentang" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"> 
+                    <div class="relative">
+                        <div class="absolute -top-4 -left-4 w-15 h-15 bg-borneo-light rounded-full z-0"></div>
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh7ACw4M127ZneANMdlIh7kbkifX3Wy8sMcmgHSeOgQLKqlEhcAodeFa2dIinsO2-ghIomQX5hfrCVYp4A2UW_mJL0Phw3nAraoXDEgG96w-Giy5FcSnCbVvmfkDH0601oQ1v2fiAEY66Vm3M4TEvI9ih2J1vIsvFlchmE4qEe2M9iQCflV4-kOpksnuRo/w640-h360/EtransformGIF.gif?q=80&w=2070&auto=format&fit=crop" alt="HASIL JEPRET IPAN" class="relative z-10 rounded-2xl shadow-2xl object-cover w-full aspect-square">
+                        <div class="absolute -bottom-6 -right-6 bg-borneo-green p-6 rounded-xl shadow-lg z-20 text-white max-w-xs hidden md:block">
+                            <p class="font-serif italic text-lg animate-bounce">"Ivan memang DJANCUK. makanya dia Cebok pake Kecap."</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="text-borneo-green text-sm font-bold tracking-widest uppercase mb-2">Siapa Kami</h2>
+                        <h3 class="text-4xl font-serif font-bold text-gray-900 mb-6">BORNEO TALE <i>adalah sebuah Inisiatif Kreatif</i> </h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">
+                            Tempat berbagi kisah, sejarah, dan budaya dari tanah Kalimantan. Channel ini dibuat untuk mengangkat cerita-cerita yang hidup di masyarakat mulai dari perjalanan tokoh-tokoh berpengaruh, legenda rakyat, hingga fakta unik dan tradisi yang jarang dibahas.
+                        </p>
+                        <p class="text-gray-600 mb-8 leading-relaxed">
+                            Informasi yang disajikan berasal dari berbagai sumber seperti buku, cerita orang tua, pengalaman masyarakat, dan referensi dari internet. Setiap cerita bisa saja memiliki versi yang berbeda, dan itu adalah bagian dari kekayaan budaya lisan Kalimantan.
+                        </p>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="border-l-4 border-borneo-gold pl-4">
+                                <h4 class="font-bold text-xl text-gray-900">100%</h4>
+                                <p class="text-sm text-gray-500">INDIE Project</p>
+                            </div>
+                            <div class="border-l-4 border-borneo-gold pl-4">
+                                <h4 class="font-bold text-xl text-gray-900">100%</h4>
+                                <p class="text-sm text-gray-500">ANAK BORNEO alias BUDAK NGABANG COY</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services -->
+        <section class="py-16 bg-borneo-light">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-serif font-bold text-borneo-dark">PROJECT KAMI</h2>
+                    <div class="w-20 h-1 bg-borneo-gold mx-auto mt-4"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-xl transition-shadow duration-300 group">
+                        <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center text-borneo-green mb-6 group-hover:bg-borneo-green group-hover:text-white transition-colors">
+                            <i class="ph ph-camera text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">Fotografi</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">Dokumentasi Fotografi dengan <i>peralatan seadanya</i> tapi akan selalu berusaha menampilkan Hasil yg TERBAIK (tapi boonk)</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-xl transition-shadow duration-300 group">
+                        <div class="w-14 h-14 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-700 mb-6 group-hover:bg-borneo-gold group-hover:text-white transition-colors">
+                            <i class="ph ph-film-strip text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">Videografi</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">Dengan Keahlian saya (<strong>DAIVA COLLIN BAFUCKyou</strong>) dalam EDITING MENGGUNAKAN AFTER EFFECT dan PREMIER PRO <strong>BAJAKAN</strong> akan berusaha menghasilkan video yang menarik dan bermakna.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-xl transition-shadow duration-300 group">
+                        <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center text-blue-800 mb-6 group-hover:bg-blue-800 group-hover:text-white transition-colors">
+                            <i class="ph ph-pen-nib text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">Storytelling Budaya</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">Menulis Narasi mendalam tentang Tokoh Besar dalam masyarakat adat Dayak, Ritual Mistik alias  dan Kearifan LOKAL<strong>e</strong> <i style="color: red;">enak kyk nya ni van</i> dan Juga ttg PENYAKIT GILA BABI.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ALBUM / Grid Gallery -->
+        <section id="karya" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                    <div>
+                        <h2 class="text-borneo-green text-sm font-bold tracking-widest uppercase mb-2">HASIL FOTOGRAFI</h2>
+                        <h3 style="text-align: center; color: rgb(0, 110, 255);" class="text-4xl font-serif font-bold text-gray-900">ALBUM</h3>
+                    </div>
+                    
+                </div>
+
+                <!-- Grid Gallery Items with Click Events -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Item 1 -->
+                    <div class="group relative overflow-hidden rounded-xl cursor-pointer card-hover h-80"
+                         onclick="openGalleryModal(this)"
+                         data-title="RAHANG EJOT Ngabang PUNK"
+                         data-link="Album1.html" target="_blank">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNPl0oOOYyBzYsseA869JLSYjHR_sO7WiuDnnmiYkwSOwTqXfYcjZCa2z6hxe7qMnrZ4ny2J3k-hcmYbyAazJTWne4y2NLyGhjlaXVNDcNsb1VFgg0kq6BesYAyHUiQ8FyreFfy5An004Lpz0AUvAvhFgO1aAqaJd7o22_TWqP7jddXQEBvi5Yypps83I/w640-h360/REjotGIF.gif?q=80&w=2070&auto=format&fit=crop" class="bg-img w-full h-full object-cover transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-borneo-dark/90 to-transparent opacity-0 card-overlay transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-borneo-gold text-xs font-bold uppercase tracking-wider mb-1">RAHANG EJOT</span>
+                            <h4 class="text-white text-xl font-serif font-bold">NGABANG PUNK</h4>
+                            <span class="text-xs text-gray-300 mt-2 flex items-center gap-1"><i class="ph ph-hand-tap"></i> Klik untuk lihat</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="group relative overflow-hidden rounded-xl cursor-pointer card-hover h-80"
+                         onclick="openGalleryModal(this)"
+                         data-title="PASUKAN MERAH"
+                         data-link="pasukan-merah.html">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhpA1PaQBsBOjAeCCkXM6q5uHp_i0ZnNtZmizihpsQK8MFLvrKdTOLjyi6Y2kiEjO92-DmqXt5e4d2y6F-X2UsLeF_ovSzF64VTLbjH6SccBPCIIzgF5pv7-3zSIFPIqQ8Vf72vpR2xUEitSWiNo1MvW8SwEgDZ15o4sBw3ys73PoqQsHNABXi1NQ1l77I/w640-h360/TEMBAKDUAR.gif?q=80&w=2070&auto=format&fit=crop" class="bg-img w-full h-full object-cover transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-borneo-dark/90 to-transparent opacity-0 card-overlay transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-borneo-gold text-xs font-bold uppercase tracking-wider mb-1">Landscape</span>
+                            <h4 class="text-white text-xl font-serif font-bold">PASUKAN MERAH</h4>
+                            <span class="text-xs text-gray-300 mt-2 flex items-center gap-1"><i class="ph ph-hand-tap"></i> Klik untuk lihat</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="group relative overflow-hidden rounded-xl cursor-pointer card-hover h-80"
+                         onclick="openGalleryModal(this)"
+                         data-title="Warna Warni Tradisi"
+                         data-link="warna-warni-tradisi.html">
+                        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhyYezRkjY2Px7D8S9Dd8c9lZIHyyrwdmxLqYO7V7xR184GAlmjDqp3INNe5whL0EPZP3Khxr6BUl_3if2_LmXJwPGtFmrz7QxvFmXoTFcg06QbCRVq7PxwU0NpxaD6bFj2ibiIaIm6TX_PPDhl-Ek9zfvSXewY7JAfKOAYT55ACQwSw-ZTxNPqF81xCO4=w421-h640?q=80&w=2070&auto=format&fit=crop" class="bg-img w-full h-full object-cover transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-borneo-dark/90 to-transparent opacity-0 card-overlay transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-borneo-gold text-xs font-bold uppercase tracking-wider mb-1">Culture</span>
+                            <h4 class="text-white text-xl font-serif font-bold">Warna Warni Tradisi</h4>
+                            <span class="text-xs text-gray-300 mt-2 flex items-center gap-1"><i class="ph ph-hand-tap"></i> Klik untuk lihat</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Item 4 -->
+                    <div class="group relative overflow-hidden rounded-xl cursor-pointer card-hover h-80 lg:col-span-2"
+                         onclick="openGalleryModal(this)"
+                         data-title="Memanggil ROH Leluhur"
+                         data-link="memanggil-roh-leluhur.html">
+                        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiwiUMBV9RPl2DNxe5-woduI7_sFNyUCcoETy_XFPmJ-f2nKbLpVPpEvqmg1K2e02JIYJar_w8G3uEqyNSBYyEncGI2orIWXS2NAJQYr3QM-XnY5Nweog__3bFDZ6a3cC8eI8VUFs5ertrPZlMGcWi-iudX07stYLbwq063Rww5qgw5aZcBcyZRBoP4WfA=w365-h640?q=80&w=2070&auto=format&fit=crop" class="bg-img w-full h-full object-cover transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-borneo-dark/90 to-transparent opacity-0 card-overlay transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-borneo-gold text-xs font-bold uppercase tracking-wider mb-1">Busana dan Perlengkapan</span>
+                            <h4 class="text-white text-xl font-serif font-bold">Memanggil ROH Leluhur</h4>
+                            <span class="text-xs text-gray-300 mt-2 flex items-center gap-1"><i class="ph ph-hand-tap"></i> Klik untuk lihat</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 5 -->
+                    <div class="group relative overflow-hidden rounded-xl cursor-pointer card-hover h-80"
+                         onclick="openGalleryModal(this)"
+                         data-title="Budaya Mistik"
+                         data-link="budaya-mistik.html">
+                        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgaU1bzf2aaxodrJgxYoJ1ztNU8Ro2pCc3Zj3kvhT6wbKC6CkRt78-345vaERTUJTgBAMjuGvP0STvRMMyAq9TXeEIf97af6YaM8D8B4hbuS9qdI_oW3HjbfpmwTwKtESCiW1KpNwt1nhiSzGCpXg8lrSRWssbuueHZfiqbkAA9HGxiEY64eemqhza2SuY=w357-h640?q=80&w=1887&auto=format&fit=crop" class="bg-img w-full h-full object-cover transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-borneo-dark/90 to-transparent opacity-0 card-overlay transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-borneo-gold text-xs font-bold uppercase tracking-wider mb-1">Ekspedisi</span>
+                            <h4 class="text-white text-xl font-serif font-bold">Budaya Mistik</h4>
+                            <span class="text-xs text-gray-300 mt-2 flex items-center gap-1"><i class="ph ph-hand-tap"></i> Klik untuk lihat</span>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="kontak" class="bg-borneo-dark text-white py-20 relative overflow-hidden">
+            <!-- Decorative bg elements -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-borneo-green rounded-full filter blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2"></div>
+            <div class="absolute bottom-0 left-0 w-96 h-96 bg-borneo-gold rounded-full filter blur-3xl opacity-10 translate-y-1/2 -translate-x-1/2"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                    <div>
+                        <h2 class="text-4xl font-serif font-bold mb-6">Mari Berkolaborasi</h2>
+                        <p class="text-gray-300 mb-8 leading-relaxed">
+                            Apakah Anda memiliki proyek dokumentasi, membutuhkan konten visual, atau ingin berdiskusi tentang konservasi? Mari Diskusikan Bersama.
+                        </p>
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-borneo-gold shrink-0">
+                                    <i class="ph ph-map-pin text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">Lokasi Basecamp</h4>
+                                    <p class="text-gray-400 text-sm">Ngabang, Kab.Landak ,Kalimantan Barat, Indonesia</p>
+                                    <p class="text-gray-400 text-sm">(RUANG SEKRE,RUMAH IVAN,KANDANG MONYET FERDI)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-borneo-gold shrink-0">
+                                    <i class="ph ph-envelope-simple text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">Email</h4>
+                                    <p class="text-gray-400 text-sm">hello@borneotale.id</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-borneo-gold shrink-0">
+                                    <i class="ph ph-whatsapp-logo text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">WhatsApp</h4>
+                                    <p class="text-gray-400 text-sm">+62 812 xxxx xxxx</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white/5 p-8 rounded-2xl backdrop-blur-sm border border-white/10">
+                        <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">Nama Lengkap</label>
+                                <input type="text" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-borneo-gold transition-colors" placeholder="Nama Anda">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                                <input type="email" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-borneo-gold transition-colors" placeholder="email@contoh.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">Pesan</label>
+                                <textarea rows="4" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-borneo-gold transition-colors" placeholder="Ceritakan proyek Anda..."></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-borneo-gold text-borneo-dark font-bold py-3 rounded-lg hover:bg-white transition-colors duration-300">
+                                Kirim Pesan
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-black text-gray-400 py-10 border-t border-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <i class="ph ph-plant text-borneo-gold text-xl"></i>
+                    <span class="font-serif text-white font-bold tracking-wider">BORNEO TALE</span>
+                </div>
+                <div class="text-sm" style="text-align: center;">
+                    &copy; 2025 Borneo Tale Creative Studio . All rights reserved.
+                </div>
+                <div class="flex gap-4">
+                    <a href="#" target="_blank" class="hover:text-borneo-gold transition-colors"><i class="ph ph-instagram-logo text-xl"></i></a>
+                    <a href="https://www.tiktok.com/@borneotale" target="_blank" class="hover:text-borneo-gold transition-colors"><i class="ph ph-twitter-logo text-xl" ></i></a>
+                    <a href="https://www.youtube.com/@borneotale" target="_blank" class="hover:text-borneo-gold transition-colors"><i class="ph ph-youtube-logo text-xl" ></i></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- GALLERY MODAL (POPUP) -->
+    <div id="galleryModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-close" onclick="closeModal()"><i class="ph ph-x"></i></div>
+            
+            <!-- Image Slider -->
+            <div class="slider-container">
+                <button class="slider-btn prev-btn" onclick="changeSlide(-1)"><i class="ph ph-caret-left"></i></button>
+                <div id="sliderImages" class="w-full h-full">
+                    <!-- Images will be injected here via JS -->
+                </div>
+                <button class="slider-btn next-btn" onclick="changeSlide(1)"><i class="ph ph-caret-right"></i></button>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6 text-center">
+                <h3 id="modalTitle" class="text-2xl font-serif font-bold text-gray-900 mb-2">Judul Proyek</h3>
+                <p class="text-gray-500 text-sm mb-6">Geser gambar untuk melihat preview lainnya.</p>
+                <a id="modalLink" href="#" class="inline-block bg-borneo-gold text-borneo-dark px-8 py-3 rounded-full font-bold hover:bg-borneo-dark hover:text-white transition-all transform hover:scale-105">
+                    Lihat Selengkapnya <i class="ph ph-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // --- MODAL & SLIDER LOGIC ---
+        let currentSlide = 0;
+        let currentImages = [];
+
+        function openGalleryModal(element) {
+            const title = element.getAttribute('data-title');
+            const link = element.getAttribute('data-link');
+            // Get the main image from the clicked card
+            const mainImg = element.querySelector('img').src;
+            
+            // SIMULASI GAMBAR SWIPE (Karena belum ada array gambar asli, kita pakai dummy duplicate & placeholder)
+            // Di implementasi nyata, Anda bisa mengambil array dari data-attribute
+            currentImages = [
+                mainImg, // Gambar utama
+                'https://images.unsplash.com/photo-1518182170546-0766ce6fecfa?q=80&w=1000&auto=format&fit=crop', // Placeholder alam 1
+                'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?q=80&w=1000&auto=format&fit=crop'  // Placeholder alam 2
+            ];
+            
+            // Set Data
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalLink').href = link;
+            
+            // Render Slider
+            renderSlides();
+            
+            // Show Modal
+            const modal = document.getElementById('galleryModal');
+            modal.style.display = 'flex';
+        }
+
+        function renderSlides() {
+            const container = document.getElementById('sliderImages');
+            container.innerHTML = '';
+            
+            currentImages.forEach((src, index) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.className = `slider-img ${index === 0 ? 'active' : ''}`;
+                container.appendChild(img);
+            });
+            currentSlide = 0;
+        }
+
+        function changeSlide(direction) {
+            const slides = document.querySelectorAll('.slider-img');
+            if (slides.length === 0) return;
+            
+            // Hide current
+            slides[currentSlide].classList.remove('active');
+            
+            // Calculate next
+            currentSlide += direction;
+            if (currentSlide >= slides.length) currentSlide = 0;
+            if (currentSlide < 0) currentSlide = slides.length - 1;
+            
+            // Show next
+            slides[currentSlide].classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('galleryModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('galleryModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // --- PRELOADER & INITIALIZATION ---
+        function initApp() {
+            const bird = document.getElementById('bird');
+            const targetT = document.getElementById('target-t');
+            const preloader = document.getElementById('preloader');
+            const mainContent = document.getElementById('main-content');
+
+            if (!bird || !targetT || !preloader || !mainContent) {
+                setTimeout(initApp, 100);
+                return;
+            }
+
+            bird.style.visibility = 'visible';
+
+            function startAnimation() {
+                if (!bird || !targetT) return;
+
+                const tRect = targetT.getBoundingClientRect();
+                const birdRect = bird.getBoundingClientRect();
+
+                const targetX = tRect.left + (tRect.width / 2) - (birdRect.width / 2);
+                const targetY = tRect.top - birdRect.height + 15; 
+
+                const moveX = targetX - birdRect.left;
+                const moveY = targetY - birdRect.top;
+
+                const flight = bird.animate([
+                    { transform: 'translate(0, 0) rotate(0deg)' },
+                    { transform: `translate(${moveX * 0.5}px, ${moveY - 50}px) rotate(-10deg)`, offset: 0.5 }, 
+                    { transform: `translate(${moveX}px, ${moveY}px) rotate(0deg)` }
+                ], {
+                    duration: 2000, 
+                    easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+                    fill: 'forwards' 
+                });
+
+                flight.onfinish = () => {
+                    if (!bird) return;
+                    bird.style.transform = `translate(${moveX}px, ${moveY}px)`; 
+                    bird.style.animation = 'perched 2s infinite ease-in-out';
+                    
+                    setTimeout(() => {
+                        if (preloader) preloader.classList.add('preloader-hidden');
+                        setTimeout(() => {
+                            if (preloader) preloader.style.display = 'none';
+                            if (mainContent) mainContent.style.display = 'block';
+                            if (document.body) document.body.style.overflow = 'auto'; 
+                        }, 1000); 
+                    }, 1000); 
+                };
+            }
+            setTimeout(startAnimation, 1000);
+        }
+
+        if (document.readyState === 'complete') {
+            initApp();
+        } else {
+            window.addEventListener('load', initApp);
+        }
+
+        // --- OTHER INTERACTIONS ---
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // NEW: Mobile Gallery Toggle Function
+        function toggleMobileGallery() {
+            const submenu = document.getElementById('mobile-gallery-submenu');
+            const icon = document.getElementById('mobile-gallery-icon');
+            
+            submenu.classList.toggle('hidden');
+            
+            if (submenu.classList.contains('hidden')) {
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg');
+                navbar.classList.remove('py-2');
+            } else {
+                navbar.classList.remove('shadow-lg');
+                navbar.classList.add('py-2');
+            }
+        });
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = 'Terkirim!';
+            btn.classList.add('bg-green-600', 'text-white');
+            setTimeout(() => {
+                e.target.reset();
+                btn.innerText = originalText;
+                btn.classList.remove('bg-green-600', 'text-white');
+            }, 3000);
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section > div').forEach(el => {
+            el.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
