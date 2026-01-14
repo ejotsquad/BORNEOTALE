@@ -1,10 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KAO ANJINGG</title>
-    <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhYfA4VWctM8g3xdejZR69PoF_er_x4oCJXC9VD24_Jqv19L5M_yaZsSxkIByQvxXkoGEW-RmsIU1TNuWM513O54BoSihrViRXqVbTeA0Eq6sEbVSeo_6DIBTe0TwNVLMCuP2Ct319scOxw9kAAnleH4gBmyi-Pt6kI1TaTmET2_UzSqqhpuYX8twSUZyc/s16000/BTJpg.jpg">
+    <title>BORNEO TALE</title>
+    <link rel="icon" type="image/png" href="icon.png">
+
+    <!-- GOOGLE SRC Console-->
+     <meta name="google-site-verification" content="u9b34NSzk7pPpr0rzgcQMRhJzAQgr3WimWEso-Kq0YU" />
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -58,9 +62,8 @@
             background: rgba(0,0,0,0.85);
             z-index: 100;
             display: none; /* Hidden by default */
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
+            justify-content: center; align-items: center;
+            padding: 20px;
         }
         
         .modal-content {
@@ -184,7 +187,7 @@
         <div class="bg-image"></div>
         <div class="title-container">
             <h1>BORNEO <span id="target-t">T</span>ALE</h1>
-            <div class="subtitle">FAK MEN</div>
+            <div class="subtitle">CREATIVE</div>
         </div>
         <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjWcbf20SEmTeLyNvgQ-1S4foC6xxrehjTxBXd7WZR2RP8AtK2q3BfZv3tgRcyJds-ulOub5ZC00Imgi4mBSIz6MEuA0tsK9LzNsNhy9XTgacGR8BUvFQYcg350F_sgHMpQypGKhfADL2x20uSgH6xpVuKnaFrwkCiLdWOLIIt14GPEPvw2uiUbf26bCQA/s16000/BTlPNG.png" alt="Borneo Tale Bird" id="bird">
     </div>
@@ -192,9 +195,9 @@
     <!-- MAIN WEBSITE CONTENT -->
     <div id="main-content">
         <!-- Navigation -->
-        <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <nav class="fixed w-full z-50 glass-nav bg-borneo-dark transition-all duration-300" id="navbar">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
+                <div class="flex items-center justify-between h-12">
                     <div class="flex-shrink-0">
                         <a href="#" class="text-2xl font-serif font-bold text-white tracking-wider flex items-center gap-2">
                             <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiS1ee7kfp2EeU32CFiUOLCAmek_wNHnbd30kr56c9g-Ra4qBM3Df7HiHcUkVGQ2x3kdqG_A-7gqHZLgOXHMeixtBpEtTU0mq3sZ3xMDcf5iGWYD95pQVGoWGNtC0H5a7lLpoLNWq7Fn-YbWsApWG8X4JpM6Dnd81MfAUXJb4v4kuOTqSBG1itp1bvaYdQ/s16000/BertenggerGIF.gif" alt="Logo Borneo Tale" class="h-10 w-15">
@@ -203,12 +206,12 @@
                     </div>
                     <div class="hidden md:block">
                         <div class="ml-10 flex items-baseline space-x-8">
-                            <a href="#beranda" class="text-borneo-gold hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"><strong> Beranda </strong></a>
-                            <a href="#tentang" class="text-borneo-gold hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"><strong> Tentang</a></strong>
+                            <a href="#beranda" class="text-white hover:text-borneo-gold px-3 py-2 rounded-md text-sm font-medium transition-colors"><strong> Beranda </strong></a>
+                            <a href="#tentang" class="text-white hover:text-borneo-gold px-3 py-2 rounded-md text-sm font-medium transition-colors"><strong> Tentang</a></strong>
                             
                             <!-- MENU DROP DOWN ALBUM -->
                             <div class="relative group">
-                                <button class="text-borneo-gold hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer">
+                                <button class="text-white hover:text-borneo-gold px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer">
                                     <a href="#karya"><strong>Galeri</strong></a>
                                     <i class="ph ph-caret-down text-xs mt-0.5"></i>
                                 </button>
@@ -217,7 +220,7 @@
                                 <div class="absolute left-0 mt-0 w-48 bg-white rounded-xl shadow-xl py-2 hidden group-hover:block transition-all duration-300 origin-top-left z-50 border border-gray-100 animate-fade-in-up">
                                     <a href="#foto-alam" class="block px-4 py-2 text-sm text-gray-700 hover:bg-borneo-light hover:text-borneo-green transition-colors border-b border-gray-50">ALBUM FOTO</a>
                                     <a href="#dokumenter" class="block px-4 py-2 text-sm text-gray-700 hover:bg-borneo-light hover:text-borneo-green transition-colors border-b border-gray-50">ALBUM VIDEO</a>
-                                    <a href="#budaya" class="block px-4 py-2 text-sm text-gray-700 hover:bg-borneo-light hover:text-borneo-green transition-colors">TOLONG ISI AGIK SISANYA VAN</a>
+                                    <a href="kamus.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-borneo-light hover:text-borneo-green transition-colors">Kamus Bahasa DAYAK KANAYANT</a>
                                 </div>
                             </div>
                             <!-- AKHIR MENU DROP DOWN -->
@@ -248,7 +251,7 @@
                         <div id="mobile-gallery-submenu" class="hidden pl-6 space-y-1 bg-black/20 rounded-md mt-1">
                             <a href="#foto-alam" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-sm text-gray-400 hover:text-borneo-gold transition-colors">ALBUM FOTO</a>
                             <a href="#dokumenter" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-sm text-gray-400 hover:text-borneo-gold transition-colors">ALBUM VIDEO</a>
-                            <a href="#budaya" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-sm text-gray-400 hover:text-borneo-gold transition-colors">ALBUM (apa lagi ivan)</a>
+                            <a href="kamus.html" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-sm text-gray-400 hover:text-borneo-gold transition-colors">Kamus Bahasa DAYAK KANAYANT</a>
                         </div>
                     </div>
 
@@ -268,9 +271,9 @@
                 </h1> 
                 
                 <p class="text-gray-200 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light">
-                    <i>NAMA SAYA</i> <strong>DAIVA COLLIN BAFUCKAKA</strong> <i>SAYA SANGAT SUKA NONTON BxKeP dan MENGIRIMKAN NYA KE SEMUA Orang</i>  
+                    <i></i>  
                     
-                    <h1 stye="font-size: 5px color: red">saya mmmg tidak jelas orgnya</h1>
+                    <h1 stye="font-size: 5px color: red"></h1>
                 </p> <br>
         </section>
 
@@ -283,12 +286,12 @@
                         <div class="absolute -top-4 -left-4 w-15 h-15 bg-borneo-light rounded-full z-0"></div>
                         <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh7ACw4M127ZneANMdlIh7kbkifX3Wy8sMcmgHSeOgQLKqlEhcAodeFa2dIinsO2-ghIomQX5hfrCVYp4A2UW_mJL0Phw3nAraoXDEgG96w-Giy5FcSnCbVvmfkDH0601oQ1v2fiAEY66Vm3M4TEvI9ih2J1vIsvFlchmE4qEe2M9iQCflV4-kOpksnuRo/w640-h360/EtransformGIF.gif?q=80&w=2070&auto=format&fit=crop" alt="HASIL JEPRET IPAN" class="relative z-10 rounded-2xl shadow-2xl object-cover w-full aspect-square">
                         <div class="absolute -bottom-6 -right-6 bg-borneo-green p-6 rounded-xl shadow-lg z-20 text-white max-w-xs hidden md:block">
-                            <p class="font-serif italic text-lg animate-bounce">"Ivan memang DJANCUK. makanya dia Cebok pake Kecap."</p>
+                            <p class="font-serif italic text-lg animate-bounce">""</p>
                         </div>
                     </div>
                     <div>
                         <h2 class="text-borneo-green text-sm font-bold tracking-widest uppercase mb-2">Siapa Kami</h2>
-                        <h3 class="text-4xl font-serif font-bold text-gray-900 mb-6">BORNEO TALE <i>adalah sebuah Inisiatif Kreatif</i> </h3>
+                        <h3 class="text-4xl font-serif font-bold text-gray-900 mb-6">BORNEO TALE <i class="text-sm">adalah</i> </h3>
                         <p class="text-gray-600 mb-6 leading-relaxed">
                             Tempat berbagi kisah, sejarah, dan budaya dari tanah Kalimantan. Channel ini dibuat untuk mengangkat cerita-cerita yang hidup di masyarakat mulai dari perjalanan tokoh-tokoh berpengaruh, legenda rakyat, hingga fakta unik dan tradisi yang jarang dibahas.
                         </p>
@@ -360,7 +363,7 @@
                     <div class="group relative overflow-hidden rounded-xl cursor-pointer card-hover h-80"
                          onclick="openGalleryModal(this)"
                          data-title="RAHANG EJOT Ngabang PUNK"
-                         data-link="Album1.html" target="_blank">
+                         data-link="#" target="_blank">
                         <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNPl0oOOYyBzYsseA869JLSYjHR_sO7WiuDnnmiYkwSOwTqXfYcjZCa2z6hxe7qMnrZ4ny2J3k-hcmYbyAazJTWne4y2NLyGhjlaXVNDcNsb1VFgg0kq6BesYAyHUiQ8FyreFfy5An004Lpz0AUvAvhFgO1aAqaJd7o22_TWqP7jddXQEBvi5Yypps83I/w640-h360/REjotGIF.gif?q=80&w=2070&auto=format&fit=crop" class="bg-img w-full h-full object-cover transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-borneo-dark/90 to-transparent opacity-0 card-overlay transition-opacity duration-300 flex flex-col justify-end p-6">
                             <span class="text-borneo-gold text-xs font-bold uppercase tracking-wider mb-1">RAHANG EJOT</span>
